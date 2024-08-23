@@ -1,0 +1,225 @@
+
+<p>maintenance works!</p>
+
+<section class="insert-form" [formGroup]="transaction">
+  <h2>Insert Transaction</h2>
+
+  <mat-form-field appearance="outline" color="accent" class="year">
+    <mat-label>Year</mat-label>
+    <mat-select formControlName="year">
+        @for (year of years; track year) {
+            <mat-option [value]="year">
+                {{year}}
+            </mat-option>
+        }
+    </mat-select>
+    @if (transaction.get('year')?.hasError('required')) {
+        <mat-error>
+            Required
+        </mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" color="accent" class="month">
+    <mat-label>Month</mat-label>
+    <mat-select formControlName="month">
+        @for (month of months; track month) {
+            <mat-option [value]="month.index">
+                {{month.name}}
+            </mat-option>
+        }
+    </mat-select>
+    @if (transaction.get('month')?.hasError('required')) {
+        <mat-error>
+            Required
+        </mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" color="accent" class="date">
+    <mat-label>Date</mat-label>
+    <input type="text" matInput formControlName="date">
+
+    @if (transaction.get('date')?.hasError('required')) {
+        <mat-error>
+            Required
+        </mat-error>
+    }
+    @if (transaction.get('date')?.hasError('invalidDate')) {
+        <mat-error>
+            Invalid Date
+        </mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" color="accent" class="desc">
+    <mat-label>Description</mat-label>
+    <input type="text" formControlName="description" matInput>
+
+    @if (transaction.get('description')?.hasError('required')) {
+        <mat-error>
+            Required
+        </mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" color="accent" class="amt">
+    <mat-label>Amount</mat-label>
+    <input type="text" formControlName="amount" matInput>
+
+    
+    @if (transaction.get('amount')?.hasError('required')) {
+        <mat-error>
+            Required
+        </mat-error>
+    }
+    
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" color="accent" class="type">
+    <mat-label>Type</mat-label>
+    <mat-select formControlName="type">
+      <mat-option value="Credit">Credit</mat-option>
+      <mat-option value="Debit">Debit</mat-option>
+    </mat-select>
+
+    @if (transaction.get('type')?.hasError('required')) {
+        <mat-error>
+            Required
+        </mat-error>
+    }
+  </mat-form-field>
+
+  <br>
+  <button mat-raised-button color="accent" [disabled]="transaction.invalid" (click)="insertForm()">
+    Insert
+  </button>
+</section>
+
+
+
+<section>
+    <table mat-table [dataSource]="dataRetrive">
+        
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef>ID</th>
+            <td mat-cell *matCellDef="let element">{{element.id}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef>Date</th>
+            <td mat-cell *matCellDef="let element">
+                {{element.date | date:'yyyy-MM-dd'}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef>Description</th>
+            <td mat-cell *matCellDef="let element">{{element.description}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="amount">
+            <th mat-header-cell *matHeaderCellDef>Amount</th>
+            <td mat-cell *matCellDef="let element">{{element.amount}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="type">
+            <th mat-header-cell *matHeaderCellDef>Type</th>
+            <td mat-cell *matCellDef="let element">{{element.type}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="createdOn">
+            <th mat-header-cell *matHeaderCellDef>Created On</th>
+            <td mat-cell *matCellDef="let element">{{element.createdOn | date:'yyyy-MM-dd' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="delete">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-icon-button color="accent" matTooltip="Edit this Transetion" (click)="edit(element)">
+                    <mat-icon>edit</mat-icon>
+                </button>
+
+                <button mat-icon-button color="warn" matTooltip="Delete this Transetion" (click)="deleteElement(element)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columns"></tr>
+        <tr mat-row *matRowDef="let row; columns: columns"></tr>
+
+
+    </table>
+</section>
+
+
+<!-- 
+<section class="insert-form" [formGroup]="transaction">
+    <h2>Insert Transetion</h2>
+    <mat-form-field appearance="outline" color="accent" class="year">
+        <mat-label>Year</mat-label>
+        <mat-select formControlName="year">
+            @for (year of years; track year) {
+                <mat-option [value]="year">
+                    {{year}}
+                </mat-option>
+            }
+        </mat-select>
+        <mat-error>
+            Required
+        </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" color="accent" class="month">
+        <mat-label>Month</mat-label>
+        <mat-select formControlName="month">
+            @for (month of months; track month) {
+                <mat-option value="month">
+                    {{month.name}}
+                </mat-option>
+            }
+        </mat-select>
+        <mat-error>
+            Required
+        </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" color="accent" class="date">
+        <mat-label>Date</mat-label>
+        <input type="text"  matInput formControlName="date">
+        <mat-error>
+            Invalid
+        </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" color="accent" class="desc">
+        <mat-label>Description</mat-label>
+        <input type="text" formControlName="description" matInput>
+        <mat-error>
+            Required
+        </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" color="accent" class="amt">
+        <mat-label>Amount</mat-label>
+        <input type="text" formControlName="amount" matInput>
+        <mat-error>
+            Required
+        </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" color="accent" class="type">
+        <mat-label>Type</mat-label>
+       <mat-select formControlName="type">
+            <mat-option value="Credit">Credit</mat-option>
+            <mat-option value="Debit">Debit</mat-option>
+       </mat-select>
+       <mat-error>
+        Required
+    </mat-error>
+    </mat-form-field>
+    <br>
+    <button mat-raised-button color="accent">
+        Insert
+    </button>
+</section> -->

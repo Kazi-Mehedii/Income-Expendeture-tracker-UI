@@ -1,0 +1,52 @@
+<h1 *ngIf="data.length == 0">No Data Found!</h1>
+
+<ng-container *ngIf="data.length > 0">
+  <mat-expansion-panel *ngFor="let monthData of data">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <span>{{ monthData.year }}</span>
+        <span>{{ monthData.month | monthName }}</span>
+      </mat-panel-title>
+
+      <mat-panel-description>
+        <div class="sg">
+          Sav:
+          <span>{{ getSavings(monthData.year, monthData.month) | numberConversionAddSymbol }}</span>
+        </div>
+        <div class="ex">
+          Ex:
+          <span>{{ getExpenditure(monthData.year, monthData.month) | numberConversionAddSymbol }}</span>
+        </div>
+        <div class="er">
+          Ear:
+          <span>{{ getEarnings(monthData.year, monthData.month) | numberConversionAddSymbol }}</span>
+        </div>
+        <div class="ps">
+          P Sav:
+          <span>{{ getPreviousSavings(monthData.year, monthData.month) | numberConversionAddSymbol }}</span>
+        </div>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <section>
+      <div class="income">
+        <ng-container *ngIf="hasIncome(monthData.transactions); else noIncome">
+          <h3>Income</h3>
+          <income-expendetur-table [transactions]="monthData.transactions"></income-expendetur-table>
+        </ng-container>
+        <ng-template #noIncome>
+          <h3>No Income in this Month!</h3>
+        </ng-template>
+      </div>
+      <div class="expenditure">
+        <ng-container *ngIf="hasExpense(monthData.transactions); else noExpense">
+          <h3>Expenditure</h3>
+          <income-expendetur-table [transactions]="monthData.transactions" [type]="'DEBIT'"></income-expendetur-table>
+        </ng-container>
+        <ng-template #noExpense>
+          <h3>No Expense in this Month!</h3>
+        </ng-template>
+      </div>
+    </section>
+  </mat-expansion-panel>
+</ng-container>

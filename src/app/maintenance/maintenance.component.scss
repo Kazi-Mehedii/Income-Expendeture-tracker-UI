@@ -1,0 +1,34 @@
+.insert-form{
+    color: #69f0ae;
+    margin-bottom: 2rem;
+}
+mat-form-field{
+    margin-right: 1rem;
+}
+.year{
+    width: 100px;
+}
+.month,
+.type{
+    width: 150px;
+}
+
+.date{
+    width: 75px;
+}
+.desc{
+    width: 300px;
+}
+.amt{
+    width: 100px;
+}
+
+section table{
+    min-width: 800px;
+    max-width: 100px;
+    .mat-mdc-header-row{
+    font-size: 1.1rem;
+    color: #69f0ae;
+    font-style: italic;
+    }
+}
